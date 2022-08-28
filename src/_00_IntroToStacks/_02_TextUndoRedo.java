@@ -26,7 +26,7 @@ public class _02_TextUndoRedo implements KeyListener {
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
 	JLabel label = new JLabel();
-	String total = "";
+	Stack<String> delete = new Stack<String>();
 
 	public static void main(String[] args) {
 		_02_TextUndoRedo a = new _02_TextUndoRedo();
@@ -45,25 +45,24 @@ public class _02_TextUndoRedo implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		Stack<String> text = new Stack<String>();
-		Stack<String> delete = new Stack<String>();
 
 		String t = "" + e.getKeyChar();
-		total += t;
-		System.out.println(e.getKeyChar());
-		text.push(t);
-		label.setText(total);
+		String existingText = label.getText();
 
-		if (e.getSource().equals(e.VK_BACK_SPACE)) {
-			total = total.substring(0, total.length() - 1);
-			System.out.println(total);
-			label.setText(total.substring(0, total.length() - 1));
-			delete.push(text.pop());
+		System.out.println(e.getKeyChar());
+		System.out.println(existingText);
+		label.setText(existingText + t);
+
+		if (e.getKeyChar() == (KeyEvent.VK_BACK_SPACE)) {
+			System.out.println(existingText);
+			label.setText(existingText.substring(0, existingText.length() - 1));
+			delete.push("" + existingText.charAt(existingText.length() - 1));
+			System.out.println(delete);
 
 		}
-		if (e.getSource().equals(e.VK_ENTER)) {
-			total += delete.pop();
-			label.setText(total);
+		if (e.getKeyChar() == (KeyEvent.VK_ENTER)) {
+			existingText += delete.pop();
+			label.setText(existingText);
 		}
 	}
 
