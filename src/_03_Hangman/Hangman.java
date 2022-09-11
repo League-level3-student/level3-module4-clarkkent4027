@@ -17,6 +17,8 @@ public class Hangman implements KeyListener {
 	JLabel label = new JLabel();
 
 	String werd = "";
+	Boolean lose = false;
+	String games;
 	int lives = 10;
 	String w = "";
 	String Live = "Lives: " + lives + " ";
@@ -33,7 +35,7 @@ public class Hangman implements KeyListener {
 		frame.setVisible(true);
 		frame.setSize(500, 500);
 		frame.addKeyListener(this);
-		String games = JOptionPane.showInputDialog("How many times would you like to play? (1-100)");
+		games = JOptionPane.showInputDialog("How many times would you like to play? (1-100)");
 		for (int i = 0; i < games.length(); i++) {
 			words.push(Utilities.readRandomLineFromFile("dictionary.txt"));
 			System.out.println(words.size());
@@ -55,24 +57,31 @@ public class Hangman implements KeyListener {
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		String s = "" + arg0.getKeyChar();
-		if (werd.contains(s)) {
-			w = w.substring(0, werd.indexOf(s)) + arg0.getKeyChar() + w.substring(werd.indexOf(s) + 1);
-			while(werd.indexOf(s)>-1) {
-				w = w.substring(0, werd.indexOf(s, werd.indexOf(s)+1)) + arg0.getKeyChar() + w.substring(werd.indexOf(s,werd.indexOf(s)) + 1);
+		for (int i = 0; i < werd.length(); i++) {
+			if (arg0.getKeyChar() == werd.charAt(i)) {
+				w = w.substring(0, i) + s + w.substring(i + 1);
+				lose = true;
+			} else {
+				lose = false;
 			}
+
 			System.out.println(w);
 			label.setText(Live + w);
-		} else {
+
+		}
+		if (lose == false && lives > 0) {
 			lives = lives - 1;
 			Live = "Lives: " + lives + " ";
 			label.setText(Live + w);
 		}
-		if (lives == 0) {
-			JOptionPane.showMessageDialog(null, "Game Over! The word was " + werd + "!" );
+
+		if (lives == 0 && lose == true) {
+			JOptionPane.showMessageDialog(null, "Congrats! You win!");
+		} else if (lives == 0 && lose == false) {
+			JOptionPane.showMessageDialog(null, "Game Over! The word was " + werd + "!");
+
 		}
-		if (w == werd) {
-			game();
-		}
+
 	}
 
 	@Override
