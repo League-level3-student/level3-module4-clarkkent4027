@@ -5,8 +5,8 @@ import java.util.Iterator;
 
 public class Maze {
 	// 1. Create a 2D array of cells. Don't initialize it.
-	
-	//null pointer exception
+
+	// null pointer exception
 	Cell[][] cells;
 	private int rows;
 	private int cols;
@@ -30,12 +30,16 @@ public class Maze {
 
 	// 4. This method iterates through the cells and draws them
 	public void draw(Graphics g) {
-
+		for (int row = 0; row < cells.length; row++) {
+			for (int col = 0; col < cells[row].length; col++) {
+				cells[row][col].draw(g);
+			}
+		}
 	}
 
 	// 5. This method returns the selected cell
 	public Cell getCell(int row, int col) {
-		return null;
+		return cells[row][col];
 	}
 
 	public int getRows() {
